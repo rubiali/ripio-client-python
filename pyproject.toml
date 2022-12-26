@@ -11,6 +11,9 @@ authors = [
 description = "Ripio Client for Python"
 readme = "README.md"
 requires-python = ">=3.7"
+dependencies = [
+  'requests >= 2.28.0',
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
