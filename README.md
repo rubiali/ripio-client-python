@@ -1,6 +1,6 @@
 # Ripio Client for Python
 ###  ALPHA SOFTWARE
-  
+
 
 This is a lightweight library that works as a client to [Ripio](https://www.ripio.com) Services
 

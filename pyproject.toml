@@ -26,3 +26,7 @@ classifiers = [
 
 [tool.hatch.build.targets.wheel]
 only-include = ["ripio"]
+
+[tool.black]
+line-length = 79
+target-version = ['py310']
