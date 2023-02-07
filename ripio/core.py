@@ -18,6 +18,12 @@ class RipioClient(ABC):
     """
     Client Manager Specific Methods
     """
+    def get_params_from_locals(self, local_vars, exclude_vars=[]):
+        return {
+            key: local_vars[key]
+            for key in local_vars
+            if key != "self" and local_vars[key] is not None and key not in exclude_vars
+        }
 
     def process_arguments(self, **kwargs):
         client_kwargs = {"success_status_code": kwargs["success_status_code"]}
@@ -58,7 +64,7 @@ class RipioClient(ABC):
             if self.api_key is None:
                 raise UnathorizedClient("No credentials were passed")
             self.authenticate_session()
-            func(self, *args, **kwargs)
+            return func(self, *args, **kwargs)
 
         return checker
 
@@ -91,14 +97,14 @@ class RipioClient(ABC):
     def put(self, *args, **kwargs):
         request_kwargs, client_kwargs = self.process_arguments(**kwargs)
         response = self.session.get(*args, **request_kwargs)
-        return response
+        return self.process_response(response, client_kwargs)
 
     def post(self, *args, **kwargs):
         request_kwargs, client_kwargs = self.process_arguments(**kwargs)
         response = self.session.post(*args, **request_kwargs)
-        return response
+        return self.process_response(response, client_kwargs)
 
     def delete(self, *args, **kwargs):
         request_kwargs, client_kwargs = self.process_arguments(**kwargs)
         response = self.session.delete(*args, **request_kwargs)
-        return response
+        return self.process_response(response, client_kwargs)
