@@ -11,7 +11,7 @@ pip install ripio-client
 
 ## Usage example
 ```python
-from ripio.trade import Client
+from ripio.trade.client import Client
 
 # API key is required for user data endpoints
 client = Client(api_key='<api_key>')
@@ -19,7 +19,7 @@ client = Client(api_key='<api_key>')
 # Get balance information
 print(client.balance())
 
-# Post a new order
+# Create a market order
 params = {
 	'pair': 'BTC_USDC',
 	'side': 'buy',
@@ -28,4 +28,27 @@ params = {
 }
 response = client.create_order(**params)
 print(response)
+
+# Create a limit buy order
+params = {
+	'pair': 'BTC_USDC',
+	'side': 'buy',
+	'amount': 0.0002,
+	'type': 'limit',
+	'price': 27471.65
+}
+response = client.create_order(**params)
+print(response)
+
+# Create a limit sell order
+params = {
+	'pair': 'BTC_USDC',
+	'side': 'sell',
+	'amount': 0.0002,
+	'type': 'limit',
+	'price': 27470
+}
+response = client.create_order(**params)
+print(response)
+
 ```
