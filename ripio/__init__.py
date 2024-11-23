@@ -2,6 +2,7 @@
 
 # api key to be used globally for the whole system
 api_key = None
+api_secret = None
 
 # Constants
 
