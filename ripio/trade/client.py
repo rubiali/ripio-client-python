@@ -308,3 +308,65 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
+
+    @RipioClient.check_api_key
+    def list_cryptocurrency_withdrawals(
+        self, currency_code=None, status=None, start_date=None, end_date=None, 
+        page_size=200, current_page=1, network=None
+    ):
+        params = {
+            "currency_code": currency_code,
+            "status": status,
+            "start_date": start_date,
+            "end_date": end_date,
+            "page_size": page_size,
+            "current_page": current_page,
+            "network": network
+        }
+        response = self.get(
+            f"{self.base_url}withdrawals", 
+            params=params, 
+            success_status_code=200
+        )
+        return response
+
+    @RipioClient.check_api_key
+    def create_cryptocurrency_withdrawal(
+        self, amount, destination, currency_code, external_id=None, tag=None, 
+        network=None, memo=None
+    ):
+        request_body = {
+            "external_id": external_id,
+            "tag": tag,
+            "network": network,
+            "memo": memo,
+            "amount": amount,
+            "destination": destination,
+            "currency_code": currency_code
+        }
+        response = self.post(
+            f"{self.base_url}withdrawals", 
+            json=request_body, 
+            success_status_code=200
+        )
+        return response
+
+    @RipioClient.check_api_key
+    def estimate_withdrawal_fee(self, currency_code, network=None, amount=None):
+        params = {"network": network, "amount": amount}
+        response = self.get(
+            f"{self.base_url}withdrawals/estimate-fee/{currency_code}", 
+            params=params, 
+            success_status_code=200
+        )
+        return response
+
+    @RipioClient.check_api_key
+    def get_cryptocurrency_withdrawal(self, id=None, external_id=None):
+        params = {"id": id, "external_id": external_id}
+        response = self.get(
+            f"{self.base_url}withdrawals/withdrawal", 
+            params=params, 
+            success_status_code=200
+        )
+        return response
