@@ -5,15 +5,14 @@ from ripio.exceptions.request import InvalidParamaters
 
 
 class Client(RipioClient):
-    def __init__(self, api_key=None):
+    def __init__(self, api_key=None, api_secret=None):
         self.base_url = ripio.RIPIO_TRADE_BASE_URL
-        super().__init__(api_key)
+        super().__init__(api_key, api_secret)
 
     def authenticate_session(self):
         self.session.headers["Authorization"] = self.api_key
 
     # Orders Management
-
     @RipioClient.check_api_key
     def get_orders(
         self,
@@ -76,7 +75,7 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_open_orders(self, pair, side, page_size=None, current_page=None):
         function_params = locals()
@@ -87,7 +86,7 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_order_by_id(self, id):
         response = self.get(
@@ -95,7 +94,7 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_order_by_external_id(self, external_id):
         response = self.get(
@@ -103,7 +102,7 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
+
     @RipioClient.check_api_key
     def cancel_order_by_external_id(self, external_id):
         request_body = {"external_id": external_id}
@@ -113,7 +112,7 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
+
     @RipioClient.check_api_key
     def cancel_all_orders(self):
         response = self.delete(
@@ -121,7 +120,6 @@ class Client(RipioClient):
             success_status_code=200,
         )
         return response
-    
 
     # Public Endpoints
     def get_tickers(self):
@@ -135,7 +133,7 @@ class Client(RipioClient):
             f"{self.base_url}public/tickers/{pair}", success_status_code=200
         )
         return response
-    
+
     def get_orderbook_level_3(self, pair, limit=None):
         function_params = locals()
         params = self.get_params_from_locals(function_params)
@@ -145,7 +143,7 @@ class Client(RipioClient):
             success_status_code=200
         )
         return response
-    
+
     def get_orderbook_level_2(self, pair, limit=None):
         function_params = locals()
         params = self.get_params_from_locals(function_params)
@@ -155,7 +153,7 @@ class Client(RipioClient):
             success_status_code=200
         )
         return response
-    
+
     def get_trades(self, pair, start_time=None, end_time=None, page_size=None, current_page=None):
         function_params = locals()
         params = self.get_params_from_locals(function_params)
@@ -166,7 +164,7 @@ class Client(RipioClient):
         )
         return response
 
-    def get_currencies(self, curency_code=None):
+    def get_currencies(self, currency_code=None):
         function_params = locals()
         params = self.get_params_from_locals(function_params)
         response = self.get(
@@ -175,7 +173,7 @@ class Client(RipioClient):
             success_status_code=200
         )
         return response
-    
+
     def get_pairs(self, pair=None):
         function_params = locals()
         params = self.get_params_from_locals(function_params)
@@ -192,9 +190,8 @@ class Client(RipioClient):
             success_status_code=200
         )
         return response
-    
+
     # Book endpoints
-    
     @RipioClient.check_api_key
     def get_book_summary(self, pair):
         function_params = locals()
@@ -205,7 +202,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_book_estimate_price(self, pair, amount, side):
         function_params = locals()
@@ -216,7 +213,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_book_orderbook_level_3(self, pair, limit=None):
         function_params = locals()
@@ -227,7 +224,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_book_orderbook_level_2(self, pair, limit=None):
         function_params = locals()
@@ -238,9 +235,8 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     # User Endpoints
-    
     @RipioClient.check_api_key
     def get_user_balances(self):
         response = self.get(
@@ -248,7 +244,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_user_balance_on_date(self, date):
         if not isinstance(date, dt.date):
@@ -259,7 +255,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_user_fee_and_limits(self):
         response = self.get(
@@ -267,7 +263,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_user_statement(self, start_time=None, end_time=None, page_size=None, current_page=None):
         function_params = locals()
@@ -278,7 +274,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_user_statement_by_currency(self, currency_code, start_time=None, end_time=None, page_size=None, current_page=None):
         function_params = locals()
@@ -289,7 +285,7 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     @RipioClient.check_api_key
     def get_user_trades(self, start_time=None, end_time=None, page_size=None, current_page=None):
         function_params = locals()
@@ -300,9 +296,8 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
+
     # Deposit Endpoints
-    
     @RipioClient.check_api_key
     def get_deposits(self, currency_code, status, start_time=None, end_time=None, page_size=None, current_page=None, network=None):
         function_params = locals()
@@ -313,5 +308,3 @@ class Client(RipioClient):
             success_status_code=200   
         )
         return response
-    
-    
